@@ -63,9 +63,7 @@ To ensure accurate results, we used the camera's calibration information, which 
 ## visuals
 
 
-https://github.com/Autonomous-robots-robota/TelloAI-V.0.1---Indoor-Autonomous-Drone-Competition/blob/main/aruco_detection_results_challengeB2.mp4
-
-
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Fdc078VS6JY/0.jpg)](https://www.youtube.com/watch?v=dc078VS6JY)
 
 
 <img src="https://github.com/Autonomous-robots-robota/TelloAI-V.0.1---Indoor-Autonomous-Drone-Competition/blob/main/img2.jpeg" width=50% height=50%>
