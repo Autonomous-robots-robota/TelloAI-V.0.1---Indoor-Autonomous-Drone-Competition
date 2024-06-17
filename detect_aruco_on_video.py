@@ -13,8 +13,8 @@ aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
 parameters = cv2.aruco.DetectorParameters()
 
 # Camera calibration parameters (example values, replace with your actual calibration results)
-camera_matrix = np.array([[800, 0, 320], [0, 800, 240], [0, 0, 1]], dtype=np.float32)
-dist_coeffs = np.array([0.1, -0.25, 0.001, 0.0005, 0.1], dtype=np.float32)
+camera_matrix = np.array([[921.170702, 0.000000, 459.904354], [0.000000, 919.018377, 351.238301], [0.000000, 0.000000, 1.000000]])
+dist_coeffs = np.array([-0.033458, 0.105152, 0.001256, -0.006647, 0.000000])
 
 # Define the real-world coordinates of the ArUco marker corners
 marker_length = 1.0  # Length of a marker's side
@@ -22,7 +22,7 @@ marker_length = 1.0  # Length of a marker's side
 csv_filename = 'aruco_detection_results.csv'
 csv_file = open(csv_filename, 'w', newline='')
 csv_writer = csv.writer(csv_file)
-csv_writer.writerow(['Frame ID', 'QR ID', 'QR 2D', 'QR 3D: dist', 'QR 3D: yaw', 'QR 3D: pitch', 'QR 3D: roll'])
+csv_writer.writerow(['Frame ID', 'QR ID', 'QR 2D', 'QR 3D: dist', 'QR 3D: yaw'])
 
 results = []
 
@@ -44,7 +44,7 @@ while cap.isOpened():
         for i in range(len(markerIds)):
             # Get the 2D corner points
             corners_2d = corners[i].reshape(4, 2).tolist()
-
+            
             # Calculate distance to the camera
             distance = np.linalg.norm(tvecs[i])
 
@@ -53,27 +53,13 @@ while cap.isOpened():
             camera_pos = -np.matrix(rmat).T * np.matrix(tvecs[i]).T
             yaw = np.arctan2(camera_pos[0][0], camera_pos[2][0]) * 180 / np.pi
 
-            # result = {
-            #     'frame': int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
-            #     'id': markerIds[i],
-            #     'corners_2d': corners_2d,
-            #     'distance': float(distance),
-            #     'yaw': yaw
-            # }
-            # results.append(result)
-
-            rmat_inv = np.linalg.inv(rmat)
-            angles_rad = cv2.RQDecomp3x3(rmat_inv)[0]  # Output in radians
-            angles_deg = np.degrees(angles_rad)  # Convert to degrees
-
             result_row = [
                 int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                 markerIds[i][0],
                 corners_2d,
                 float(distance),
-                angles_deg[0],  # yaw
-                angles_deg[1],  # pitch
-                angles_deg[2]  # roll
+                yaw,  yaw[0]
+
             ]
             csv_writer.writerow(result_row)
 
@@ -93,6 +79,3 @@ while cap.isOpened():
 cap.release()
 cv2.destroyAllWindows()
 
-# Save the results to a JSON file
-with open('aruco_detection_results.json', 'w') as f:
-    json.dump(results, f, indent=4)
