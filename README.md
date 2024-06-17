@@ -61,9 +61,10 @@ To ensure accurate results, we used the camera's calibration information, which 
 
 
 ## visuals
-
+example of ArUco detection: 
+https://www.youtube.com/watch?v=dc078VS6JY
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Fdc078VS6JY/0.jpg)](https://www.youtube.com/watch?v=dc078VS6JY)
 
-
+example of ArUco detection on video from camera on TelloAI
 <img src="https://github.com/Autonomous-robots-robota/TelloAI-V.0.1---Indoor-Autonomous-Drone-Competition/blob/main/img2.jpeg" width=50% height=50%>
