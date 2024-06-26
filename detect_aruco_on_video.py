@@ -4,7 +4,7 @@ import json
 import csv
 
 # Load the video
-cap = cv2.VideoCapture('challengeB.mp4')
+cap = cv2.VideoCapture('aruco2.mp4')
 
 # Load the predefined dictionary
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
@@ -52,13 +52,14 @@ while cap.isOpened():
             rmat, _ = cv2.Rodrigues(rvecs[i])
             camera_pos = -np.matrix(rmat).T * np.matrix(tvecs[i]).T
             yaw = np.arctan2(camera_pos[0][0], camera_pos[2][0]) * 180 / np.pi
+            yaw = float(yaw[0][0])
 
             result_row = [
                 int(cap.get(cv2.CAP_PROP_POS_FRAMES)),
                 markerIds[i][0],
                 corners_2d,
                 float(distance),
-                yaw,  yaw[0]
+                yaw
 
             ]
             csv_writer.writerow(result_row)
