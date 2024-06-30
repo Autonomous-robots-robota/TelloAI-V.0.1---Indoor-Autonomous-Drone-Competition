@@ -9,13 +9,15 @@ import time
 def pick_aruco_from_csv(file):
     file_path = file  # Update this with the actual path
     data = pd.read_csv(file_path)
-    frame = 15
+    frame = 250
     row = data.loc[data["Frame ID"] == frame]
     return row
 
 
 def find_aruco(frame, row):
-    eps = 100
+    eps_x_y = 50
+    eps_yaw = 20
+    eps_dist = 10
 
     aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
 
@@ -31,6 +33,7 @@ def find_aruco(frame, row):
     marker_length = 1.0  # Length of a marker's side
 
     # Convert the frame to grayscale
+
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Detect the markers in the grayscale image
@@ -41,8 +44,8 @@ def find_aruco(frame, row):
         rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, marker_length, camera_matrix, dist_coeffs)
 
         for i in range(len(markerIds)):
-            print(int(markerIds[i]))
-            print(int(row['QR ID'].values[0]))
+            # print(int(markerIds[i]))
+            # print(int(row['QR ID'].values[0]))
             if (int(markerIds[i]) == int(row['QR ID'].values[0])):
 
                 # Get the 2D corner points
@@ -62,8 +65,11 @@ def find_aruco(frame, row):
                 second_corners = eval(row['QR 2D'].values[0])
 
                 # Compute x y distance
-                delta_x = first_corners[0][0] - second_corners[0][0]
-                delta_y = first_corners[0][1] - second_corners[0][1]
+                delta_x = (first_corners[0][0]+first_corners[2][0])/2 - (second_corners[0][0]+second_corners[2][0])/2
+                delta_y = (first_corners[0][1] + first_corners[2][1]) / 2 -(second_corners[0][1]+second_corners[2][1])/2
+
+                # delta_x = first_corners[0][0] - second_corners[0][0]
+                # delta_y = first_corners[0][1] - second_corners[0][1]
 
                 # Extract and compute angle differences
 
@@ -76,35 +82,38 @@ def find_aruco(frame, row):
                 delta_dist = first_dist - second_dist
 
                 # fix left right
-                if np.abs(delta_x) > eps:
+                if np.abs(delta_x) > eps_x_y:
                     if delta_x > 0:
-                        print('move right', 'delt_x = ', delta_x)
+                        print('move right')
                     elif delta_x < 0:
-                        print('move left', 'delt_x = ', delta_x)
+                        print('move left')
                 # fix up down
-                elif np.abs(delta_x) <= eps and np.abs(delta_y) > eps:
+                elif np.abs(delta_x) <= eps_x_y and np.abs(delta_y) > eps_x_y:
                     if delta_y > 0:
-                        print('move up', 'delt_y = ', delta_y)
+                        print('move forward')
                     elif delta_y < 0:
-                        print('move down', 'delt_y = ', delta_y)
+                        print('move backward')
                 # fix dist
-                elif np.abs(delta_x) <= eps and np.abs(delta_y) <= eps and np.abs(delta_dist) > eps:
+                elif np.abs(delta_x) <= eps_x_y and np.abs(delta_y) <= eps_x_y and np.abs(delta_dist) > eps_dist:
+                #     print("first_dist =", first_dist, "   second_dist =", second_dist)
                     if delta_dist > 0:
-                        print('move forward', 'delt_dist = ', delta_dist)
+                        print('move up')
                     elif delta_dist < 0:
-                        print('move backward', 'delt_dist = ', delta_dist)
+                        print('move down')
                 # fix yaw
-                elif np.abs(delta_x) <= eps and np.abs(delta_y) <= eps and np.abs(delta_dist) <= eps and np.abs(
-                        delta_yaw) > eps:
+                elif np.abs(delta_x) <= eps_x_y and np.abs(delta_y) <= eps_x_y and np.abs(delta_dist) <= eps_dist and np.abs(
+                        delta_yaw) > eps_yaw:
+                    print("first: " ,yaw_first, "   second: ", yaw_second)
                     if delta_yaw > 0:
-                        print('yaw right', 'delt_yaw = ', delta_yaw)
+                        print('yaw right')
                     elif delta_yaw < 0:
-                        print('yaw left', 'delt_yaw = ', delta_yaw)
+                        print('yaw left')
 
                 else:
-                    print("you are less then", eps, "away from target position in all directions")
+                    print("you are close enough to the target position in all directions")
 
-                time.sleep(2)
+
+
 
 
 def open_camera_start_look(row):
@@ -113,12 +122,15 @@ def open_camera_start_look(row):
 
     # define a video capture object
     vid = cv2.VideoCapture(0)
-
-    while (True):
+    vid = cv2.VideoCapture('http://username:password@ip:port/video')
+    while (vid.isOpened()):
 
         ret, frame = vid.read()
+        frame = cv2.resize(frame, (600, 400))
+        # try:
         cv2.imshow('frame', frame)
-
+        # except:
+        #     pass
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 

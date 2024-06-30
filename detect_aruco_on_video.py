@@ -4,7 +4,7 @@ import json
 import csv
 
 # Load the video
-cap = cv2.VideoCapture('aruco2.mp4')
+cap = cv2.VideoCapture('aruco3.mp4')
 
 # Load the predefined dictionary
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_4X4_250)
@@ -28,6 +28,7 @@ results = []
 
 while cap.isOpened():
     ret, frame = cap.read()
+    frame = cv2.resize(frame, (600, 400))
     if not ret:
         break
 
