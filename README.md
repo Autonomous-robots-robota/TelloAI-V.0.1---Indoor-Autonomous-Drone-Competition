@@ -108,7 +108,7 @@ If so we first corrected the distance to the aruco code moving forward-backwards
 
 Then we fixed the X and Y axis in the frame moving left-right and up-down.
 
-Finally we fixex the yaw be moving yaw_left-yaw_right.
+Finally we fixed the yaw be moving yaw_left-yaw_right.
 
 
 ### deeper explanation
