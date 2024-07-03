@@ -93,6 +93,7 @@ git clone https://github.com/Autonomous-robots-robota/TelloAI-V.0.1---Indoor-Aut
 run detect_aruco_on_video.py
 then run part2.py
 ```
+
 ## Project Implementation
 
 For this part of the project, we used the First part of the project to get a csv file of a video and randomly choose a frame.
@@ -105,8 +106,18 @@ If so we checked if the code we are seeing is in the frame we randomly choose.
 
 If so we first corrected the distance to the aruco code moving forward-backwards.
 
-Then we fixed the X and Y axis in the frame moving left-right and Up-down.
+Then we fixed the X and Y axis in the frame moving left-right and up-down.
 
 Finally we fixex the yaw be moving yaw_left-yaw_right.
+
+
+### deeper explanation
+
+For each variable we calculated the valuein the original frame and in the current frame.
+We subtracted the orignal vaue from the current values. If the difference was bigger than a certain eps we mvd the camera accordingly.
+we used 3 different eps values. eps_dist, eps_x_y, eps_yaw.
+The smaller the eps are the closer the drone can get to being in its original posioning.
+To calulate the X Y we used the 2D corners and calculated the avarge x and y from the top left and bottom rght corners.
+
 
 
