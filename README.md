@@ -114,9 +114,13 @@ Finally we fixex the yaw be moving yaw_left-yaw_right.
 ### deeper explanation
 
 For each variable we calculated the valuein the original frame and in the current frame.
+
 We subtracted the orignal vaue from the current values. If the difference was bigger than a certain eps we mvd the camera accordingly.
+
 we used 3 different eps values. eps_dist, eps_x_y, eps_yaw.
+
 The smaller the eps are the closer the drone can get to being in its original posioning.
+
 To calulate the X Y we used the 2D corners and calculated the avarge x and y from the top left and bottom rght corners.
 
 
