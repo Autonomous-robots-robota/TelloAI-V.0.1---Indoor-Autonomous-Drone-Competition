@@ -1,6 +1,10 @@
 # TelloAI-V.0.1---Indoor-Autonomous-Drone-Competition
 
-This project focuses on extracting information from a drone's video feed regarding ArUco codes and saving the data to a CSV file. The specific data points we aimed to extract are:
+<b> This project has two parts </b>
+
+## Part 1
+
+This part of the project focuses on extracting information from a drone's video feed regarding ArUco codes and saving the data to a CSV file. The specific data points we aimed to extract are:
 
     - The ArUco code number detected in the video.
     - The 2D coordinates of the ArUco code corners.
@@ -25,7 +29,7 @@ run detect_aruco_on_video.py
 
 ## Project Implementation
 
-In this project, we utilized OpenCV's built-in functions for image recognition of ArUco codes. The process involved the following steps:
+For this part of the project, we utilized OpenCV's built-in functions for image recognition of ArUco codes. The process involved the following steps:
 
 ```sh
 
@@ -68,3 +72,41 @@ https://www.youtube.com/watch?v=dc078VS6JY
 
 example of ArUco detection on video from camera on TelloAI
 <img src="https://github.com/Autonomous-robots-robota/TelloAI-V.0.1---Indoor-Autonomous-Drone-Competition/blob/main/img2.jpeg" width=50% height=50%>
+
+___________________________________________________________________________________________
+## part 2
+
+This part of the project focuses on taking a still image or a frame from a video and positiong a drone where the image/still was taken from.
+
+## How to Use
+
+
+Ensure you have the required libraries installed by checking the requirements.txt file.
+
+
+## Running the Project
+
+To run the project, use the following commands:
+
+```sh
+git clone https://github.com/Autonomous-robots-robota/TelloAI-V.0.1---Indoor-Autonomous-Drone-Competition.git
+run detect_aruco_on_video.py
+then run part2.py
+```
+## Project Implementation
+
+For this part of the project, we used the First part of the project to get a csv file of a video and randomly choose a frame.
+
+Then, we opened up the computers camera or connected to a phone camera using the [IP WebCam](https://play.google.com/store/apps/details?id=com.pas.webcam&hl=en_US) app.
+
+We used the same opencv lbraries as part 1, to see it there are any aruco codes in the video.
+
+If so we checked if the code we are seeing is in the frame we randomly choose.
+
+If so we first corrected the distance to the aruco code moving forward-backwards.
+
+Then we fixed the X and Y axis in the frame moving left-right and Up-down.
+
+Finally we fixex the yaw be moving yaw_left-yaw_right.
+
+
